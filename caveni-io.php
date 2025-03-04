@@ -101,3 +101,29 @@ add_action('template_redirect', function () {
 		die;
 	}
 });
+
+
+
+// caveni reports js enqueue
+function caveni_enqueue_report_scripts() {
+    wp_enqueue_script(
+        'caveni-reports-js',
+        plugin_dir_url(__FILE__) . 'includes/modules/js/caveni-report.js',
+        array('jquery'), 
+        null,
+        true 
+    );
+}
+add_action('admin_enqueue_scripts', 'caveni_enqueue_report_scripts'); //for wp admin
+add_action('wp_enqueue_scripts', 'caveni_enqueue_report_scripts'); //for fronend 
+
+
+// caveni reports style enqueue 
+function caveni_enqueue_report_styles() {
+    wp_enqueue_style(
+        'caveni-reports-css',
+        plugin_dir_url(__FILE__) . 'includes/modules/css/caveni-report.css'
+    );
+}
+add_action('admin_enqueue_scripts', 'caveni_enqueue_report_styles'); // For WP Admin
+add_action('wp_enqueue_scripts', 'caveni_enqueue_report_styles'); // For Frontend

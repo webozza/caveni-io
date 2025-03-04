@@ -1,3 +1,29 @@
+<!-- including add-client.php  -->
+<?php 
+
+include_once CAVENI_IO_PATH . 'includes/modules/add-report.php';
+
+function enqueue_periodpicker_for_reporting_page() {
+    if ( is_page('reporting') || wp_doing_ajax() ) { // Ensure script loads on 'reporting' page and AJAX calls
+        // Ensure jQuery is loaded before Period Picker
+        wp_enqueue_script('jquery');
+
+        // Register and enqueue the Period Picker JS script
+        wp_enqueue_script(
+            'periodpicker-js', 
+            CAVENI_IO_URL . '/public/js/jquery.periodpicker.full.min.js', 
+            array('jquery'), 
+            '4.5.1', 
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_periodpicker_for_reporting_page');
+?>
+
+
+
+
 <div class="col-xl-12 dashboard-reports-by-client">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 report-summary-block">
@@ -15,13 +41,11 @@
                         <?php if ( current_user_can( 'administrator' ) ) { ?>
                             <div class="col col-auto add-report-button">
                                 
-                                    <a href="<?php echo home_url( $wp->request )."/reports?_report_action=add"; ?>"
-                                        class="btn btn-primary btn-w-md btn-wave"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="ADD NEW REPORT">
-                                        <?php echo __('ADD REPORT','caveni-io'); ?> 
-                                    </a>
+                            <a id="cavein-report-add" class="btn btn-primary btn-w-md btn-wave text-white">
+                                <?php echo __('ADD REPORT', 'caveni-io'); ?>
+                            </a>
+
+
                             </div>
                         <?php } ?>
                     </div>
@@ -56,3 +80,5 @@
         </div>
     </div>
 </div>
+
+

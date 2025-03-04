@@ -1,0 +1,316 @@
+body {
+    font-size: 0.875rem;
+    font-family: var(--default-font-family);
+    font-weight: var(--default-font-weight);
+    background-color: var(--default-body-bg-color);
+    color: var(--default-text-color);
+    line-height: 1.5;
+    text-align: start;
+    overflow-x: clip;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-inline-end: 0 !important;
+    overflow: auto !important;
+}
+.page-header {
+    display: flex;
+    align-items: center;
+    background-color: #0E1424 !important;
+    color: white;
+    margin: 0px;
+    justify-content: space-between;
+    padding: 0.7rem 2.7rem;
+    border-radius: 7px;
+    position: relative;
+    min-height: 50px;
+}
+.page-leftheader {
+    margin-block-end: 0.25rem;
+    margin-block-start: 0.25rem;
+}
+.page-title {
+    margin: 0;
+    font-size: 1.5625rem;
+    font-weight: 500;
+    line-height: 2.5rem;
+    position: relative;
+}
+
+.alert:last-child {
+    margin-block-end: 0;
+}
+.alert {
+    padding: 0.625rem 0.85rem;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+}
+
+.admisetting-tabs .nav-link {
+    padding: 1rem 1.25rem;
+    display: flex;
+    border-inline-start: 0.188rem solid transparent;
+    position: relative;
+    color: var(--default-text-color);
+    border-radius: 0;
+    box-shadow: none !important;
+}
+
+.nav-link {
+    color: var(--default-text-color);
+    border-radius: 0.5rem;
+}
+.nav-link.active {
+    background-color: var(--primary01);
+    color: var(--primary-color);
+}
+
+.admisetting-tabs .nav-icon {
+    font-size: 1.375rem;
+    margin-inline-end: 0.5rem;
+}
+
+.admisetting-tabs .nav-icon {
+    font-size: 1.375rem;
+    margin-inline-end: 0.5rem;
+}
+
+.admisetting-tabs .nav-link.active {
+    background: var(--default-background2);
+    color: var(--primary-color);
+    border-inline-start: 3px solid var(--primary-color);
+    border-radius: 0;
+}
+.custom-switch-checkbox input[type=checkbox] {
+  margin: 0 !important;
+  border: none;
+  box-shadow: none;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  background: #fff !important;
+}
+
+.custom-switch-checkbox .label-text {
+  position: relative;
+  margin: 0;
+}
+
+.custom-switch-checkbox .handle {
+  width: 42px;
+  height: 24px;
+  display: block;
+  border-radius: 25px;
+  border: 2px solid #bcbfbc;
+  transition: all 0.4s ease;
+  background: #fff;
+  cursor: pointer;
+}
+
+.custom-switch-checkbox .handle:before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  background: #bcbfbc;
+  border-radius: 50%;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.custom-switch-checkbox input[type=checkbox]:checked::before {
+  display: none !important;
+}
+
+.custom-switch-checkbox input[type=checkbox]:checked {
+  background: #3366ff !important;
+}
+
+.custom-switch-checkbox input[type=checkbox]:checked + .handle {
+  background: #3366ff !important;
+  border-color: #3366ff;
+}
+
+.custom-switch-checkbox input[type=checkbox]:checked + .handle:before {
+  left: 23px;
+  background: #fff;
+}
+/* End:: height */
+
+select.form-control ,input.form-control[type="number"], input.caveni-input[type="text"] {
+  border-color: var(--bs-border-color) !important;
+}
+
+.adminsetting-content.tab-content .tab-pane {
+    padding: 0;
+    border: 0;
+}
+
+.tab-content .tab-pane {
+    padding: 1.5rem;
+    border: 1px solid var(--default-border);
+    border-radius: 0.5rem;
+    color: var(--default-text-color);
+}
+
+.form-group {
+    margin-block-end: 1rem;
+}
+
+.custom-switch-checkbox .label-text {
+    position: relative;
+    margin: 0;
+}
+
+.form-check-lg label {
+    margin-inline-start: 0.5rem;
+    font-size: 0.85rem;
+    margin-block-start: 3px;
+}
+
+.custom-switch-checkbox input[type=checkbox]:checked {
+    background: #3366ff !important;
+}
+
+.form-check-lg.form-switch .form-check-input {
+    width: 2.5rem;
+}
+
+.custom-switch-checkbox input[type=checkbox]:checked + .handle {
+    background: #3366ff !important;
+    border-color: #3366ff;
+}
+
+.custom-switch-checkbox .handle {
+    width: 42px;
+    height: 24px;
+    display: block;
+    border-radius: 25px;
+    border: 2px solid #bcbfbc;
+    transition: all 0.4s ease;
+    background: #fff;
+    cursor: pointer;
+}
+
+.form-check-lg label {
+    margin-inline-start: 0.5rem;
+    font-size: 0.85rem;
+    margin-block-start: 3px;
+}
+.custom-switch-description {
+    color: var(--text-muted) !important;
+}
+
+.card.custom-card .card-footer {
+    background-color: transparent !important;
+    border-block-start: 1px solid var(--default-border);
+    padding: 1rem 1.25rem;
+}
+
+.adminsetting-content.tab-content .tab-pane {
+    padding: 0;
+    border: 0;
+}
+.tab-content .tab-pane {
+    padding: 1.5rem;
+    border: 1px solid var(--default-border);
+    border-radius: 0.5rem;
+    color: var(--default-text-color);
+}
+
+select.form-control, input.form-control[type="number"], input.caveni-input[type="text"] {
+    border-color: var(--bs-border-color) !important;
+}
+.select2.select2-container {
+    width: 100% !important;
+}
+
+.select2-container .select2-selection--multiple {
+    min-height: 2.25rem !important;
+}
+.select2-container--default .select2-selection--multiple {
+    background-color: var(--form-control-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    border-radius: 0.3125rem !important;
+}
+.select2-selection__clear {
+    color: var(--text-muted);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+    border: 1px solid var(--primary-color) !important;
+    border-radius: 0.15rem !important;
+    margin-block-start: 0.375rem !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    inset-block-start: -0.3rem !important;
+    font-weight: 500 !important;
+    font-size: 1.125rem !important;
+    margin-block-start: 2px;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    margin-block-start: 0.5rem !important;
+}
+
+.select2-selection--multiple .select2-search__field {
+    background-color: transparent !important;
+}
+
+.form-control {
+    border-color: var(--input-border);
+    color: var(--default-text-color);
+    background-color: var(--form-control-bg);
+    font-size: 0.9375rem;
+    font-weight: var(--default-font-weight);
+    line-height: 1.6;
+    border-radius: 0.35rem;
+}
+
+.card > hr {
+    margin-inline-end: 0;
+    margin-inline-start: 0;
+}
+
+hr {
+    border-color: var(--default-border);
+    margin: 0.5625rem 0;
+    opacity: 1;
+}
+
+caption {
+    color: var(--text-muted);
+}
+
+#wpfooter {
+    position: unset !important;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: var(--primary-color);
+    background-color: var(--custom-white);
+    color: var(--default-text-color);
+}
+
+@media (min-width: 900px) {
+    .admisetting-tabs .nav-link.active::before {
+        position: absolute;
+        inset-block-start: 0;
+        inset-block-end: 0;
+        content: "";
+        inset-inline-end: -0.960rem;
+        border-block-start: 26px solid transparent;
+        border-inline-start: 15px solid var(--default-background2);
+        border-block-end: 26px solid transparent;
+    }
+}

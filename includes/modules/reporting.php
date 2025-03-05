@@ -1,32 +1,33 @@
-<!-- including add-client.php  -->
-<?php 
+<?php
+// Function to enqueue Date Picker scripts
+function enqueue_datepicker_script() {
+    // Register the Date Picker script
+    wp_register_script(
+        'caveni-io-datepicker', 
+        CAVENI_IO_URL . 'public/js/jquery.periodpicker.full.min.js', 
+        array('jquery'), 
+        null, 
+        true
+    );
 
-include_once CAVENI_IO_PATH . 'includes/modules/add-report.php';
+    // Enqueue the Date Picker script
+    wp_enqueue_script('caveni-io-datepicker');
 
-function enqueue_periodpicker_for_reporting_page() {
-    if ( is_page('reporting') || wp_doing_ajax() ) { // Ensure script loads on 'reporting' page and AJAX calls
-        // Ensure jQuery is loaded before Period Picker
-        wp_enqueue_script('jquery');
-
-        // Register and enqueue the Period Picker JS script
-        wp_enqueue_script(
-            'periodpicker-js', 
-            CAVENI_IO_URL . '/public/js/jquery.periodpicker.full.min.js', 
-            array('jquery'), 
-            '4.5.1', 
-            true
-        );
-    }
 }
-add_action('wp_enqueue_scripts', 'enqueue_periodpicker_for_reporting_page');
+
+// Call the function to enqueue the script
+enqueue_datepicker_script();
+
+// Include the add-report.php file (modal content)
+include_once CAVENI_IO_PATH . 'includes/modules/add-report.php';
 ?>
 
 
 
 
-<div class="col-xl-12 dashboard-reports-by-client">
+<div class="col-xl-12 crm_dash_report">
     <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 report-summary-block">
+        <div class="col-xl-12 col-lg-12 col-md-12 crm_report_summuery">
             <div class="card custom-card mb-0">
                 <div class="card-header border-0">
                     <div class="row align-items-center flex-grow-1">
@@ -39,9 +40,9 @@ add_action('wp_enqueue_scripts', 'enqueue_periodpicker_for_reporting_page');
                             
                         </div>
                         <?php if ( current_user_can( 'administrator' ) ) { ?>
-                            <div class="col col-auto add-report-button">
+                            <div class="col col-auto crm_add_report_button">
                                 
-                            <a id="cavein-report-add" class="btn btn-primary btn-w-md btn-wave text-white">
+                            <a id="crm_report_add" class="btn btn-primary btn-w-md btn-wave text-white">
                                 <?php echo __('ADD REPORT', 'caveni-io'); ?>
                             </a>
 
@@ -50,16 +51,16 @@ add_action('wp_enqueue_scripts', 'enqueue_periodpicker_for_reporting_page');
                         <?php } ?>
                     </div>
                 </div>
-                <div class="card-body reports-home-page">
+                <div class="card-body crm_reports_homepage">
                     <div class="row">
                         <div class="col-12">
                             <div class="alert d-none m-3" id="deleted_report_confirmation_alert" role="alert"></div>
                         </div>
                     </div>
-                    <div class="table-responsive reports-table-area">
+                    <div class="table-responsive crm_table_area">
                         <table
                             class="table table-vcenter text-nowrap table-bordered border-bottom"
-                            id="supportreport-dash" style="width:100%">
+                            id="crm_support_dash" style="width:100%">
                             <thead>
                                 <tr>
                                     <th class="border-bottom-0">#<?php echo __('ID','caveni-io'); ?></th>

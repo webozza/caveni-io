@@ -1,114 +1,123 @@
 (function ($) {
-    "use strict";
+  "use strict";
 
-    // Add a global alert modal element (only if it doesn't exist)
-    if ($("#crm_global_alertmodal").length === 0) {
-        $("body").append('<div id="crm_global_alertmodal" class="crm_global_alertmodal"></div>');
+  // Add a global alert modal element (only if it doesn't exist)
+  if ($("#crm_global_alertmodal").length === 0) {
+    $("body").append(
+      '<div id="crm_global_alertmodal" class="crm_global_alertmodal"></div>'
+    );
+  }
+
+  // Function to show alert modal (Reusable)
+  function showAlertModal(message, type = "success") {
+    let alertModal = $("#crm_global_alertmodal");
+    alertModal
+      .removeClass("crm_success crm_error")
+      .addClass("crm_" + type)
+      .text(message)
+      .fadeIn(300);
+
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      alertModal.fadeOut(300);
+    }, 3000);
+  }
+
+  // Open the Modal
+  $("#crm_report_add").on("click", function () {
+    $("#crm_modal_title").text("Add New Report"); // Set modal title
+    $(".error-message").remove(); // Clear previous errors
+    $("#crm_addform")[0].reset(); // Reset the form
+    $("#submissionType").val(""); // Reset hidden submissionType field
+    $("#crm_newsmodal").modal("show"); // Show modal
+  });
+
+  // Close Modal
+  $(document).on("click", ".btn-close-report", function () {
+    $("#crm_newsmodal").modal("hide");
+    $("body").removeClass("modal-open");
+    $(".modal-backdrop").remove();
+  });
+
+  // Initialize Select2 and Period Picker When Modal is Opened
+  $("#crm_newsmodal").on("shown.bs.modal", function () {
+    $(".crm_select")
+      .select2({
+        dropdownParent: $("#crm_newsmodal"),
+        placeholder: "Select Company",
+        allowClear: true,
+        width: "100%",
+      })
+      .val(null)
+      .trigger("change"); // Ensure it's cleared when modal opens
+
+    if (typeof $.fn.periodpicker !== "undefined") {
+      $("#crm_date_range").periodpicker({
+        end: "#crm_end_date",
+        formatDate: "YYYY-MM-DD",
+        cells: [1, 2],
+        todayButton: false,
+        onChangePeriod: function () {
+          // This part can be simplified
+          let startDate = $(".period_picker_selected").first().data("date");
+          let endDate = $(".period_picker_selected").last().data("date");
+
+          console.log("Raw Period Picker Values:", startDate, endDate); // Debugging
+        },
+      });
+    } else {
+      console.log("Period Picker is not loaded.");
+    }
+  });
+
+  // Function to Format Date String (Convert to DD-MM-YY)
+  function formatDateString(dateStr) {
+    if (!dateStr || typeof dateStr !== "string") return ""; // Ensure it's a string
+
+    // Check if it's already in YYYY-MM-DD format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      let parts = dateStr.split("-");
+      return `${parts[2]}-${parts[1]}-${parts[0].slice(-2)}`; // Convert YYYY-MM-DD → DD-MM-YY
     }
 
-    // Function to show alert modal (Reusable)
-    function showAlertModal(message, type = "success") {
-        let alertModal = $("#crm_global_alertmodal");
-        alertModal.removeClass("crm_success crm_error").addClass("crm_" + type).text(message).fadeIn(300);
-
-        // Auto-hide after 3 seconds
-        setTimeout(() => {
-            alertModal.fadeOut(300);
-        }, 3000);
+    // Convert MM/DD/YYYY to DD-MM-YY
+    let parts = dateStr.split("/");
+    if (parts.length === 3) {
+      return `${parts[1]}-${parts[0]}-${parts[2].slice(-2)}`; // Convert MM/DD/YYYY → DD-MM-YY
     }
 
-    // Open the Modal
-    $("#crm_report_add").on("click", function () {
-        $("#crm_modal_title").text("Add New Report"); // Set modal title
-        $(".error-message").remove(); // Clear previous errors
-        $("#crm_addform")[0].reset(); // Reset the form
-        $("#submissionType").val(""); // Reset hidden submissionType field
-        $("#crm_newsmodal").modal("show"); // Show modal
-    });
+    return ""; // Return empty if format is unknown
+  }
 
-    // Close Modal
-    $(document).on("click", ".btn-close-report", function () {
-        $("#crm_newsmodal").modal("hide");
-        $("body").removeClass("modal-open");
-        $(".modal-backdrop").remove();
-    });
+  // Update hidden company name field when a company is selected
+  $("#crm_company").on("change", function () {
+    var selectedCompanyID = $(this).val(); // Get company ID
+    var selectedCompanyName = $(this).find(":selected").data("company") || ""; // Get company name from data attribute
+    $("#crm_company_name").val(selectedCompanyName); // Set the hidden input value
 
-    // Initialize Select2 and Period Picker When Modal is Opened
-    $('#crm_newsmodal').on('shown.bs.modal', function () {
-        $('.crm_select').select2({
-            dropdownParent: $('#crm_newsmodal'),
-            placeholder: "Select Company",
-            allowClear: true,
-            width: '100%'
-        }).val(null).trigger('change'); // Ensure it's cleared when modal opens
+    console.log("Selected Company ID:", selectedCompanyID); // Logs ID
+    console.log("Selected Company Name:", selectedCompanyName); // Logs Name
+  });
 
-        if (typeof $.fn.periodpicker !== 'undefined') {
-            $('#crm_date_range').periodpicker({
-                end: "#crm_end_date",
-                formatDate: "YYYY-MM-DD",
-                cells: [1, 2],
-                todayButton: false,
-                onChangePeriod: function () {
-                    // This part can be simplified
-                    let startDate = $(".period_picker_selected").first().data("date");
-                    let endDate = $(".period_picker_selected").last().data("date");
-    
-                    console.log("Raw Period Picker Values:", startDate, endDate); // Debugging
-
-                }
-            });
-        } else {
-            console.log('Period Picker is not loaded.');
-        }
-    });
-
-    // Function to Format Date String (Convert to DD-MM-YY)
-    function formatDateString(dateStr) {
-        if (!dateStr || typeof dateStr !== "string") return ""; // Ensure it's a string
-
-        // Check if it's already in YYYY-MM-DD format
-        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-            let parts = dateStr.split("-");
-            return `${parts[2]}-${parts[1]}-${parts[0].slice(-2)}`; // Convert YYYY-MM-DD → DD-MM-YY
-        }
-
-        // Convert MM/DD/YYYY to DD-MM-YY
-        let parts = dateStr.split("/");
-        if (parts.length === 3) {
-            return `${parts[1]}-${parts[0]}-${parts[2].slice(-2)}`; // Convert MM/DD/YYYY → DD-MM-YY
-        }
-
-        return ""; // Return empty if format is unknown
-    }
-
-    // Update hidden company name field when a company is selected
-    $('#crm_company').on('change', function () {
-        var selectedCompanyID = $(this).val(); // Get company ID
-        var selectedCompanyName = $(this).find(":selected").data("company") || ""; // Get company name from data attribute
-        $('#crm_company_name').val(selectedCompanyName); // Set the hidden input value
-
-        console.log("Selected Company ID:", selectedCompanyID); // Logs ID
-        console.log("Selected Company Name:", selectedCompanyName); // Logs Name
-    });
-
-    // Show the preloader on page load
-$(window).on('load', function() {
+  // Show the preloader on page load
+  $(window).on("load", function () {
     $("#preloader").fadeOut("slow"); // Hide preloader once page is fully loaded
-});
+  });
 
-// Handle Form Submission (Redirect to JSON Output)
-$('.submission-btn').on('click', function (event) {
+  // Handle Form Submission (Redirect to JSON Output)
+  $(".submission-btn").on("click", function (event) {
     event.preventDefault(); // Prevent default form submission
 
     // Show the preloader
     $("#preloader").show();
 
     var submissionType = $(this).val(); // Get button value
-    $('#submissionType').val(submissionType); // Set hidden field
+    $("#submissionType").val(submissionType); // Set hidden field
 
     // Ensure the latest selected company name is stored
     var selectedCompanyID = $("#crm_company").val();
-    var selectedCompanyName = $("#crm_company").find(":selected").data("company") || "";
+    var selectedCompanyName =
+      $("#crm_company").find(":selected").data("company") || "";
     $("#crm_company_name").val(selectedCompanyName);
 
     // Extract the correct start and end dates from the .period_picker_selected elements
@@ -123,12 +132,12 @@ $('.submission-btn').on('click', function (event) {
     console.log("Extracted End Date:", endDate);
 
     // Get form data
-    var formData = $('#crm_addform').serializeArray();
+    var formData = $("#crm_addform").serializeArray();
     var payload = {};
     $.each(formData, function (index, field) {
-        // Skip adding the crm_date_range to the payload
-        if (field.name === "crm_date_range") return; // Skip this key
-        payload[field.name] = field.value;
+      // Skip adding the crm_date_range to the payload
+      if (field.name === "crm_date_range") return; // Skip this key
+      payload[field.name] = field.value;
     });
 
     // Ensure company name and ID are correct in payload
@@ -147,7 +156,39 @@ $('.submission-btn').on('click', function (event) {
     // Redirect to the JSON output and show preloader
     window.location.href = "data:text/json;charset=utf-8," + jsonString;
     $("#preloader").show(); // Ensure the preloader is shown
-});
+  });
 
+  $("#crm_newsmodal .submission-btn").click(function () {
+    let reportType = $(this).attr("value");
 
+    $.ajax({
+      url: caveniReportsData.ajax_url,
+      method: "POST",
+      data: {
+        action: "caveni_generate_report", // WordPress AJAX action
+        security: caveniReportsData.nonce, // Security nonce
+      },
+      success: function (response) {
+        console.log("Report Generated:", response);
+
+        if (response.success) {
+          alert("Report successfully generated!");
+          $("#report-output").html(
+            "<a href='" +
+              response.data.report_url +
+              "' target='_blank'>Download Report</a>"
+          );
+        } else {
+          alert("Error: " + response.data.message);
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error("AJAX Error:", textStatus, errorThrown);
+        alert("Failed to generate report. Please try again.");
+      },
+      complete: function () {
+        button.prop("disabled", false).text("Generate Report");
+      },
+    });
+  });
 })(jQuery);

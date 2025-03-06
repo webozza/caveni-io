@@ -1,29 +1,7 @@
 <?php
-// Function to enqueue Date Picker scripts
-function enqueue_datepicker_script() {
-    // Register the Date Picker script
-    wp_register_script(
-        'caveni-io-datepicker', 
-        CAVENI_IO_URL . 'public/js/jquery.periodpicker.full.min.js', 
-        array('jquery'), 
-        null, 
-        true
-    );
-
-    // Enqueue the Date Picker script
-    wp_enqueue_script('caveni-io-datepicker');
-
-}
-
-// Call the function to enqueue the script
-enqueue_datepicker_script();
-
 // Include the add-report.php file (modal content)
 include_once CAVENI_IO_PATH . 'includes/modules/add-report.php';
 ?>
-
-
-
 
 <div class="col-xl-12 crm_dash_report">
     <div class="row">
@@ -82,4 +60,5 @@ include_once CAVENI_IO_PATH . 'includes/modules/add-report.php';
     </div>
 </div>
 
-
+<div id="caveni__seo-report"><?php include CAVENI_IO_PATH . 'includes/modules/seo-report.php'; ?></div>
+<div id="caveni__ppc-report"></div>

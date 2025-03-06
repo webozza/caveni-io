@@ -92,10 +92,10 @@
 
                     <span class="error alert" style="display: none;" id="error-report"></span>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-secondary text-dark submission-btn" value="Download"><?php echo __('Download', 'caveni-io'); ?></button>
-                        <button type="submit" class="btn btn-outline-secondary text-dark submission-btn" value="Schedule"><?php echo __('Schedule', 'caveni-io'); ?></button>
-                        <button type="submit" class="btn btn-success m-2 submission-btn" value="Send"><?php echo __('Send', 'caveni-io'); ?></button>
-                        <button type="submit" class="addreport_submit btn btn-success successful-notify submission-btn" value="Submit"><?php echo __('Submit', 'caveni-io'); ?></button>
+                        <button type="submit" class="btn text-dark outline-btn submission-btn" value="Download"><?php echo __('Download', 'caveni-io'); ?></button>
+                        <button type="submit" class="btn text-dark outline-btn submission-btn" value="Schedule"><?php echo __('Schedule', 'caveni-io'); ?></button>
+                        <button type="submit" class="btn btn-success m-2 full-btn submission-btn" value="Send"><?php echo __('Send', 'caveni-io'); ?></button>
+                        <button type="submit" class="addreport_submit btn btn-success successful-notify full-btn submission-btn" value="Submit"><?php echo __('Submit', 'caveni-io'); ?></button>
                     </div>
 
                 </form>

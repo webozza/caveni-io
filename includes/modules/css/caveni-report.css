@@ -172,6 +172,27 @@ FORM VALIDATION ERROR MESSAGE
 }
 
 
+/* button design */
+.outline-btn {
+    background-color: transparent !important;
+    border: 1px solid #d9d9d9 !important;
+    color: #555 !important;
+    padding: 11px 20px !important;
+}
+
+.outline-btn:hover {
+    background-color: #5D66F0 !important;
+    border: 1px solid #5D66F0 !important;
+    color:white !important;
+}
+
+.full-btn{
+
+    border: 1px solid #5D66F0 !important;
+}
+
+
+
 
 /* ========================= 
 RESPONSIVE STYLES 

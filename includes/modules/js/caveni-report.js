@@ -61,8 +61,6 @@
           // This part can be simplified
           let startDate = $(".period_picker_selected").first().data("date");
           let endDate = $(".period_picker_selected").last().data("date");
-
-          console.log("Raw Period Picker Values:", startDate, endDate); // Debugging
         },
       });
     } else {
@@ -94,9 +92,6 @@
     var selectedCompanyID = $(this).val(); // Get company ID
     var selectedCompanyName = $(this).find(":selected").data("company") || ""; // Get company name from data attribute
     $("#crm_company_name").val(selectedCompanyName); // Set the hidden input value
-
-    console.log("Selected Company ID:", selectedCompanyID); // Logs ID
-    console.log("Selected Company Name:", selectedCompanyName); // Logs Name
   });
 
   // Show the preloader on page load
@@ -128,9 +123,6 @@
     startDate = formatDateString(startDate);
     endDate = formatDateString(endDate);
 
-    console.log("Extracted Start Date:", startDate);
-    console.log("Extracted End Date:", endDate);
-
     // Get form data
     var formData = $("#crm_addform").serializeArray();
     var payload = {};
@@ -148,38 +140,52 @@
     payload["crm_start_date"] = startDate; // Start Date (formatted)
     payload["crm_end_date"] = endDate; // End Date (formatted)
 
-    console.log("Final Payload Data:", JSON.stringify(payload, null, 2)); // Debugging
-
     // Redirect to JSON output URL (for viewing in Network tab)
     var jsonString = encodeURIComponent(JSON.stringify(payload));
 
     // Redirect to the JSON output and show preloader
-    window.location.href = "data:text/json;charset=utf-8," + jsonString;
     $("#preloader").show(); // Ensure the preloader is shown
   });
 
   $("#crm_newsmodal .submission-btn").click(function () {
     let reportType = $(this).attr("value");
+    let reportHtmlElement =
+      reportType === "SEO"
+        ? $("#caveni__seo-report")
+        : $("#caveni__ppc-report");
+
+    if (reportHtmlElement.length === 0) {
+      console.error("Report element not found!");
+      return;
+    }
+
+    let reportHtml = reportHtmlElement.prop("outerHTML"); // Get full element HTML
+    let encodedHtml = JSON.stringify(reportHtml); // Encode HTML as JSON string
+
+    $(".caveni--overlay-loader").show().css("display", "flex");
+
+    let data = {
+      action: "caveni_generate_report",
+      security: caveniReportsData.nonce,
+      report_html: encodedHtml,
+    };
+
+    console.log("Sending data:", data);
 
     $.ajax({
       url: caveniReportsData.ajax_url,
       method: "POST",
-      data: {
-        action: "caveni_generate_report", // WordPress AJAX action
-        security: caveniReportsData.nonce, // Security nonce
-      },
+      data: data,
       success: function (response) {
         console.log("Report Generated:", response);
 
         if (response.success) {
-          alert("Report successfully generated!");
-          $("#report-output").html(
-            "<a href='" +
-              response.data.report_url +
-              "' target='_blank'>Download Report</a>"
-          );
+          console.log("Report successfully generated!");
+
+          $(".caveni--overlay-loader").hide();
+          $(".btn-close-report").click();
         } else {
-          alert("Error: " + response.data.message);
+          console.error("Error: " + response.data.message);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -187,7 +193,7 @@
         alert("Failed to generate report. Please try again.");
       },
       complete: function () {
-        button.prop("disabled", false).text("Generate Report");
+        console.log("Report complete");
       },
     });
   });

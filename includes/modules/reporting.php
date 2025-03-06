@@ -1,4 +1,5 @@
 <?php
+
 // Include the add-report.php file (modal content)
 include_once CAVENI_IO_PATH . 'includes/modules/add-report.php';
 ?>

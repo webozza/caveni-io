@@ -1,5 +1,9 @@
 <div class="modal fade" id="crm_newsmodal" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
+        <div class="caveni--overlay-loader" style="display:none">
+            <img src="<?= CAVENI_IO_URL . 'public/images/loader.svg' ?>">
+            Hold tight while we generate your Caveni Report!
+        </div>
         <div class="modal-content">
             <div class="modal-header">
                 <i class="fe fe-file-text"></i>

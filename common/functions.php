@@ -699,6 +699,7 @@ add_action('template_redirect', 'redirect_non_admin_users');
 
 // By @webozza
 include CAVENI_IO_PATH . 'includes/apis/ga4.php';
+include CAVENI_IO_PATH . 'includes/modules/report-handler.php';
 
 function convertToDate($data_value, $is_previous = false) {
     if (preg_match('/^(\d+)daysAgo$/', $data_value, $matches)) {
@@ -809,22 +810,8 @@ function caveni_filter_settings_shortcode() {
 }
 add_shortcode('caveni_filter_settings', 'caveni_filter_settings_shortcode');
 
-// Caveni Reporting Shortcode Function
-function caveni_reporting_module() {
-    ob_start();
 
-    $reporting_file = CAVENI_IO_PATH . 'includes/modules/reporting.php';
 
-    if (file_exists($reporting_file)) {
-        include $reporting_file;
-    } else {
-        echo '<p>Error: Reporting module file not found.</p>';
-    }
-
-    return ob_get_clean();
-}
-
-add_shortcode('caveni_module_reporting', 'caveni_reporting_module');
 
 
 

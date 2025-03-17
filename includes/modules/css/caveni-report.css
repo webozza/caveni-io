@@ -2,6 +2,30 @@
  ADD REPORT MODAL STYLES 
 ========================= */
 
+#caveni__seo-report,
+#caveni__ppc-report {
+  min-width: 1110px;
+  /* opacity: 0; */
+}
+
+.caveni-seo-charts,
+.caveni-ppc-charts {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+}
+
+.crm_dash_report {
+  overflow-x: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  overflow: hidden;
+}
+
+.crm_dash_report::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 .caveni--overlay-loader {
   position: absolute;
   top: 0;
@@ -13,6 +37,20 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.75);
+}
+
+.caveni--overlay-loader h5 {
+  margin: 0;
+  padding-left: 5px;
+}
+
+.top-metrics-container .caveni-box {
+  flex: 1;
+  background: #ffffff;
+  padding: 24px 24px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .caveni--overlay-loader img {
@@ -245,6 +283,11 @@ RESPONSIVE STYLES
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+  }
+
+  #caveni__seo-report .top-metrics-container,
+  #caveni__ppc-report .top-metrics-container {
+    flex-direction: row;
   }
 
   #crm_newsmodal .modal-header {

@@ -36,12 +36,17 @@ if (!class_exists('Caveni_Reporting_Module')) {
         // Enqueue Scripts and Styles only when shortcode is present
         public function enqueue_scripts() {
             $scripts = [
-                'caveni-reports-js' => CAVENI_IO_URL . 'includes/modules/js/caveni-report.js',
-                'caveni-periodpicker-js' => CAVENI_IO_URL . 'public/js/jquery.periodpicker.full.min.js',
+                'caveni-periodpicker' => CAVENI_IO_URL . 'public/js/jquery.periodpicker.full.min.js',
+                'apexcharts' => CAVENI_IO_URL . 'public/js/apexcharts.min.js',
+                'caveni-reports' => CAVENI_IO_URL . 'includes/modules/js/caveni-report.js',
+                'html2canvas' => CAVENI_IO_URL . 'public/js/html2canvas.min.js',
+                'highcharts' => CAVENI_IO_URL . 'public/js/highcharts.min.js',
+                'highcharts-accessibility' => CAVENI_IO_URL . 'public/js/highcharts-accessibility.min.js',
+                'highcharts-more' => CAVENI_IO_URL . 'public/js/highcharts-more.min.js',
             ];
 
             $styles = [
-                'caveni-reports-css' => CAVENI_IO_URL . 'includes/modules/css/caveni-report.css',
+                'caveni-reports' => CAVENI_IO_URL . 'includes/modules/css/caveni-report.css',
             ];
 
             // Enqueue Scripts
@@ -55,7 +60,7 @@ if (!class_exists('Caveni_Reporting_Module')) {
             }
 
             // Localize script to pass AJAX URL and nonce
-            wp_localize_script('caveni-reports-js', 'caveniReportsData', [
+            wp_localize_script('caveni-reports', 'caveniReportsData', [
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('caveni_reports_nonce'),
             ]);

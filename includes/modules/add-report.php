@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="caveni--overlay-loader" style="display:none">
             <img src="<?= CAVENI_IO_URL . 'public/images/loader.svg' ?>">
-            Hold tight while we generate your Caveni Report!
+            <h5>Hold tight while we generate your Caveni Report!</h5>
         </div>
         <div class="modal-content">
             <div class="modal-header">
@@ -98,7 +98,7 @@
                     <span class="error alert" style="display: none;" id="error-report"></span>
                     <div class="modal-footer">
                         <button type="submit" class="btn text-dark outline-btn submission-btn" value="Download"><?php echo __('Download', 'caveni-io'); ?></button>
-                        <button type="submit" class="btn text-dark outline-btn submission-btn" value="Schedule"><?php echo __('Schedule', 'caveni-io'); ?></button>
+                        <button style="display:none" type="submit" class="btn text-dark outline-btn submission-btn" value="Schedule"><?php echo __('Schedule', 'caveni-io'); ?></button>
                         <button type="submit" class="btn btn-success m-2 full-btn submission-btn" value="Send"><?php echo __('Send', 'caveni-io'); ?></button>
                         <button type="submit" class="force-hide addreport_submit btn btn-success successful-notify full-btn submission-btn" value="Submit"><?php echo __('Submit', 'caveni-io'); ?></button>
                     </div>

@@ -815,4 +815,107 @@ add_shortcode('caveni_filter_settings', 'caveni_filter_settings_shortcode');
 
 
 
+// testing pdf styling
+function seo_report_shortcode() {
+    // Dummy data for testing
+    $api_data_avg_position = [
+        ["keyword" => "quick blinds", "avg_position" => "1.00", "trend" => "pre_high", "percentage_change" => "40.0%"],
+        ["keyword" => "kiwiblinds", "avg_position" => "1.71", "trend" => "pre_low", "percentage_change" => "14.3%"],
+        ["keyword" => "we blinds", "avg_position" => "1.75", "trend" => "pre_low", "percentage_change" => "0.0%"],
+        ["keyword" => "blinds home visit", "avg_position" => "2.00", "trend" => "pre_high", "percentage_change" => "New"],
+        ["keyword" => "vertical blinds", "avg_position" => "3.00", "trend" => "pre_low", "percentage_change" => "6.7%"],
+    ];
+
+    // Image paths (using pre-defined CAVENI_IO_URL)
+    $green_data_bg = CAVENI_IO_URL . "public/images/green-data-bg.png";
+    $red_data_bg = CAVENI_IO_URL . "public/images/red-data-bg.png";
+    $indicator_up_img = CAVENI_IO_URL . "public/images/increase-indicator.png";
+    $indicator_down_img = CAVENI_IO_URL . "public/images/decrease-indicator.png";
+
+    // Start output buffering
+    ob_start();
+    ?>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            font-family: "Poppins", sans-serif;
+            text-align: left;
+            font-size: 14px;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+        }
+        th {
+            font-weight: 600;
+            background: #f4f4f4;
+        }
+        td.has-bg {
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 100px;
+            padding: 5px 12px;
+        }
+        td.has-bg .indicator-container {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 500;
+            gap: 6px;
+        }
+        td.has-bg.up .indicator-container {
+            background: #e6faf4;
+        }
+        td.has-bg.down .indicator-container {
+            background: #ffe9ec;
+        }
+        td.has-bg.up span {
+            color: #0dcd94;
+        }
+        td.has-bg.down span {
+            color: #f7284a;
+        }
+    </style>
+
+    <h2>SEO Report</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Keyword</th>
+                <th>Value</th>
+                <th>Vs Prev</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($api_data_avg_position as $keyword): 
+                $trend = $keyword['trend'];
+                $percentage_change = $keyword['percentage_change'];
+                $indicator_img = ($trend === 'pre_low') ? $indicator_down_img : $indicator_up_img;
+                $bg_image = ($trend === 'pre_low') ? $red_data_bg : $green_data_bg;
+                $trend_class = ($trend === 'pre_low') ? 'down' : 'up';
+            ?>
+            <tr>
+                <td><?= htmlspecialchars($keyword['keyword']); ?></td>
+                <td><?= htmlspecialchars($keyword['avg_position']); ?></td>
+                <td class="has-bg <?= $trend_class; ?>" style="background-image: url('<?= $bg_image; ?>');">
+                    <div class="indicator-container">
+                        <img src="<?= $indicator_img; ?>" style="height: 16px;"> 
+                        <span><?= htmlspecialchars($percentage_change); ?></span>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <?php
+    return ob_get_clean();
+}
+
+// Register shortcode
+add_shortcode('seo_report', 'seo_report_shortcode');
 

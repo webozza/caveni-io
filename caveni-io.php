@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       Caveni.IO
  * Description:       Comprehensive management software designed to streamline client interactions, project workflows, and other business operations.
- * Version:           4.5.1
+ * Version:           4.7.0
  * Author:            Caveni
  * Author URI:        https://caveni.com/
  * License:           GPL-2.0+
@@ -29,11 +29,12 @@ if (! defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('CAVENI_IO_VERSION', '4.5.1');
+define('CAVENI_IO_VERSION', '4.7.0');
 define('CAVENI_IO_PATH', plugin_dir_path(__FILE__));
 define('CAVENI_IO_URL', plugin_dir_url(__FILE__));
 define('CAVENI_IO_POST_TYPE', 'caveni_ticket');
 define('CAVENI_IO_POST_TAXONOMY', 'caveni_ticket_category');
+define('CAVENI_ENABLE_DUMMY_DATA', false);
 
 /**
  * The code that runs during plugin activation.

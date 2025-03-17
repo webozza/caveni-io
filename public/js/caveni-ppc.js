@@ -107,7 +107,21 @@
 
   let accCurrency;
 
+  let resetGraphs = () => {
+    // Impressions Graph
+    $("#clicks-chart-ppc").remove();
+    $("#caveni__clicks-chart").append('<div id="clicks-chart-ppc"></div>');
+
+    // Users Graph
+    $("#conversions-chart-ppc").remove();
+    $("#caveni__conversions-chart").append(
+      '<div id="conversions-chart-ppc"></div>'
+    );
+  };
+
   function initGraphs() {
+    resetGraphs();
+
     $("#top-metrics-ppc .loader-container").show();
     $(".caveni-table-reponsive .loader-container").show();
 

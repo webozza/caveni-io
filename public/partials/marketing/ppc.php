@@ -66,7 +66,7 @@
     <div class="seo-left-col">
 
         <!-- Clicks Chart -->
-        <div class="caveni-box">
+        <div id="caveni__clicks-chart" class="caveni-box">
             
             <div class="caveni-box-title">
                 <div class="caveni-icon">
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Conversions Chart -->
-        <div class="caveni-box">
+        <div id="caveni__conversions-chart" class="caveni-box">
             
             <div class="caveni-box-title">
                 <div class="caveni-icon">

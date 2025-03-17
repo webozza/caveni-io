@@ -49,15 +49,14 @@
 
         <div class="caveni-seo-charts">
             <div id="caveni__impression-chart" class="caveni-box">
-
-            <div class="caveni-box-title">
-                <div class="caveni-icon">
-                    <i class="fe fe-target"></i>
+                <div class="caveni-box-title">
+                    <div class="caveni-icon">
+                        <i class="fe fe-target"></i>
+                    </div>
+                    <h3>Impressions</h3>
                 </div>
-                <h3>Impressions</h3>
-            </div>
 
-            <div class="caveni-impressions caveni-box-main-metric force-hide">
+                <div class="caveni-impressions caveni-box-main-metric">
             </div>
 
             <div id="impression-chart-seo"></div>
@@ -72,7 +71,7 @@
                 <h3>Total Users</h3>
             </div>
 
-            <div class="caveni-total-users caveni-box-main-metric force-hide">
+            <div class="caveni-total-users caveni-box-main-metric">
             </div>
 
             <div id="user-chart-seo"></div>

@@ -111,281 +111,17 @@
     });
   }
 
-  function initGraphs() {
-    $("#impression-chart-seo, #user-chart-seo").hide();
-    $(".caveni-error-handler").remove();
-    $(".caveni-meter-chart").empty();
+  let resetGraphs = () => {
+    // Impressions Graph
+    $("#impression-chart-seo").remove();
+    $("#caveni__impression-chart").append(
+      '<div id="impression-chart-seo"></div>'
+    );
 
-    $(
-      ".caveni-impressions.caveni-box-main-metric, .caveni-total-users.caveni-box-main-metric, #keyword_body, #avg_position_body, #source_body"
-    ).empty();
-
-    $("#top-metrics .caveni-box-content .loader-container").remove();
-
-    $("#top-metrics .caveni-box-content").prepend(`
-      <div class="loader-container">
-          <img decoding="async" src="https://caveni.local/wp-content/plugins/caveni-io//public/images/metrics-loader.gif" alt="Loading..." class="loader-gif">
-      </div>  
-    `);
-    $("#top-metrics .caveni-value").remove();
-
-    $(".caveni-table-reponsive .loader-container").show();
-
-    let isCustomDateActive =
-      $('input[name="custom_date_selected"]').val() == "1";
-    let startDate;
-    let endDate;
-
-    if (isCustomDateActive) {
-      startDate = $('input[name="caveni_start_date"]').val();
-      endDate = $('input[name="caveni_end_date"]').val();
-    } else {
-      startDate = $(
-        ".seo-date-filters .caveni--tab-option.caveni--active"
-      ).data("value");
-      endDate = "yesterday";
-    }
-
-    $(".caveni-seo-section .caveni-loader").show();
-    let msgel = $(this);
-    let caveniClientId = $(".client-search-seo").find(":selected").val();
-
-    $.ajax({
-      type: "POST",
-      url: caveniSeo.ajaxurl,
-      data: {
-        action: "caveni_get_seo_data",
-        caveni_nonce: caveniSeo.security_get_data,
-        caveni_client_id: caveniClientId,
-        caveni_start_date: startDate,
-        caveni_end_date: endDate,
-      },
-      success: function (response) {
-        let timeZone = response.data.ga4_property_details.timeZone;
-
-        $(".caveni-chart-filters .filter-item").click(function () {
-          $(".caveni--select-option option[value='custom']")
-            .prop("disabled", false)
-            .prop("selected", true);
-
-          setTimeout(() => {
-            $(".caveni--select-option option[value='custom']").prop(
-              "disabled",
-              true
-            );
-          }, 100);
-
-          let selectedRange = $(this).text().trim();
-
-          // Create a Date object in the correct timezone
-          let now = new Date(new Date().toLocaleString("en-US", { timeZone }));
-
-          console.log(`time now in ${timeZone}`, now);
-          let mtd = new Date(now.getFullYear(), now.getMonth(), 1);
-          console.log(mtd);
-
-          let startDate, endDate;
-
-          // Function to get the first Monday of the current week
-          function getMonday(d) {
-            d = new Date(d);
-            let day = d.getDay();
-            let diff = d.getDate() - (day === 0 ? 6 : day - 1); // Adjust for Monday start
-            return new Date(d.setDate(diff));
-          }
-
-          switch (selectedRange) {
-            // ✅ TODAY/YESTERDAY
-            case "Today":
-              startDate = endDate = now;
-              break;
-            case "Yesterday":
-              startDate = endDate = new Date(now.setDate(now.getDate() - 1));
-              break;
-
-            // ✅ THIS/LAST WEEK
-            case "This Week":
-              startDate = getMonday(now);
-              endDate = now;
-              break;
-            case "Last Week":
-              startDate = getMonday(now);
-              startDate.setDate(startDate.getDate() - 7);
-              endDate = new Date(startDate);
-              endDate.setDate(endDate.getDate() + 6);
-              break;
-
-            // ✅ WEEK TO DATE
-            case "Week to Date":
-              startDate = getMonday(now);
-              endDate = now;
-              break;
-
-            // ✅ THIS/LAST MONTH
-            case "This Month":
-              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-              endDate = now;
-              break;
-            case "Last Month":
-              startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-              endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-              break;
-
-            // ✅ MONTH TO DATE
-            case "Month to Date":
-              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-              endDate = now;
-              break;
-
-            // ✅ THIS/LAST QUARTER
-            case "This Quarter":
-              let quarterStartMonth = Math.floor(now.getMonth() / 3) * 3;
-              startDate = new Date(now.getFullYear(), quarterStartMonth, 1);
-              endDate = now;
-              break;
-            case "Last Quarter":
-              let lastQuarterStartMonth =
-                Math.floor(now.getMonth() / 3) * 3 - 3;
-              startDate = new Date(now.getFullYear(), lastQuarterStartMonth, 1);
-              endDate = new Date(
-                now.getFullYear(),
-                lastQuarterStartMonth + 3,
-                0
-              );
-              break;
-
-            // ✅ QUARTER TO DATE
-            case "Quarter to Date":
-              let qtdStartMonth = Math.floor(now.getMonth() / 3) * 3;
-              startDate = new Date(now.getFullYear(), qtdStartMonth, 1);
-              endDate = now;
-              break;
-
-            // ✅ THIS/LAST YEAR
-            case "This Year":
-              startDate = new Date(now.getFullYear(), 0, 1);
-              endDate = now;
-              break;
-            case "Last Year":
-              startDate = new Date(now.getFullYear() - 1, 0, 1);
-              endDate = new Date(now.getFullYear() - 1, 11, 31);
-              break;
-
-            // ✅ YEAR TO DATE
-            case "Year to Date":
-              startDate = new Date(now.getFullYear(), 0, 1);
-              endDate = now;
-              break;
-
-            default:
-              console.log("Unknown range selected:", selectedRange);
-              return;
-          }
-
-          // Format dates as YYYY-MM-DD
-          let formattedStartDate = formatDate(startDate);
-          let formattedEndDate = formatDate(endDate);
-
-          console.log(
-            "Start Date:",
-            formattedStartDate,
-            "End Date:",
-            formattedEndDate,
-            "Timezone:",
-            timeZone
-          );
-
-          // Set values in hidden inputs
-          $('input[name="caveni_start_date"]').val(formattedStartDate);
-          $('input[name="caveni_end_date"]').val(formattedEndDate);
-
-          // Mark custom date as selected
-          $('input[name="custom_date_selected"]').val("1");
-
-          // Submit form
-          $(".seo-client-search-form").submit();
-
-          $(".caveni-chart-filters").attr("style", "display:none");
-        });
-
-        $(
-          ".caveni-seo-section .caveni-box-main-metric, .caveni-filter-container"
-        ).removeClass("force-hide");
-        $(".caveni-seo-section .caveni-loader").hide();
-
-        if (response.success) {
-          console.log(response.data);
-
-          renderUsersChart(
-            response.data.dates,
-            response.data.metric_total_users
-          );
-
-          renderKeywordData(response.data.average_position);
-          renderKeywordImpressions(response.data.impression_data);
-          renderSourceData(response.data.users_by_source);
-          renderEngagementData(response.data.engagement);
-          renderTopMetrics(response.data.engagement);
-
-          // GA4 not connect with GSC
-          if (
-            response.data.fetch_errors &&
-            response.data.fetch_errors.impressions &&
-            response.data.fetch_errors.impressions.length
-          ) {
-            $(".caveni-impressions.caveni-box-main-metric").css(
-              "display",
-              "none"
-            );
-
-            $(".caveni-impressions.caveni-box-main-metric").after(`
-              <div class="caveni-error-handler">
-                <p><b style="color: #f7284a">Error:</b> ${response.data.fetch_errors.impressions}</p>  
-              </div>  
-            `);
-
-            $("#impression-chart-seo").remove();
-          }
-
-          // Failed to fetch average position for keywords
-          // GA4 not connect with GSC
-          if (
-            response.data.fetch_errors &&
-            response.data.fetch_errors.keywordPosition &&
-            response.data.fetch_errors.keywordPosition.length
-          ) {
-            $(
-              ".keyword-avg-position .caveni-table, .impressions-by-keyword .caveni-table"
-            ).after(`
-                <div class="caveni-error-handler">
-                  <p><b style="color: #f7284a">Error:</b> ${response.data.fetch_errors.keywordPosition}</p>  
-                </div>
-            `);
-          }
-
-          renderImpressionChart(
-            response.data.dates,
-            response.data.metric_total_impressions
-          );
-        }
-
-        setTimeout(() => {
-          $("#impression-chart-seo, #user-chart-seo").show();
-          $(".caveni-table-reponsive .loader-container").hide();
-
-          $("#avg_position_body tr, #keyword_body tr, #source_body tr").each(
-            function (index) {
-              if (index >= 99) {
-                $(this).remove();
-              }
-            }
-          );
-
-          caveniSorter();
-        }, 100);
-      },
-    });
-  }
+    // Users Graph
+    $("#user-chart-seo").remove();
+    $("#caveni__user-chart").append('<div id="user-chart-seo"></div>');
+  };
 
   function generatePlotLines(data, step = 1000) {
     const maxValue = Math.max(...data); // Get the maximum value from the data
@@ -875,6 +611,8 @@
   }
 
   function renderKeywordImpressions(impressions) {
+    console.log(impressions);
+
     let impressionsHtml = "";
 
     $.each(impressions, function (index, keyword) {
@@ -1037,6 +775,282 @@
 
     // Add the HTML to the container
     document.getElementById("top-metrics").innerHTML = metricsHtml;
+  }
+
+  function initGraphs() {
+    resetGraphs();
+
+    $("#impression-chart-seo, #user-chart-seo").hide();
+    $(".caveni-error-handler").remove();
+    $(".caveni-meter-chart").empty();
+
+    $(
+      ".caveni-impressions.caveni-box-main-metric, .caveni-total-users.caveni-box-main-metric, #keyword_body, #avg_position_body, #source_body"
+    ).empty();
+
+    $("#top-metrics .caveni-box-content .loader-container").remove();
+
+    $("#top-metrics .caveni-box-content").prepend(`
+      <div class="loader-container">
+          <img decoding="async" src="https://caveni.local/wp-content/plugins/caveni-io//public/images/metrics-loader.gif" alt="Loading..." class="loader-gif">
+      </div>  
+    `);
+    $("#top-metrics .caveni-value").remove();
+
+    $(".caveni-table-reponsive .loader-container").show();
+
+    let isCustomDateActive =
+      $('input[name="custom_date_selected"]').val() == "1";
+    let startDate;
+    let endDate;
+
+    if (isCustomDateActive) {
+      startDate = $('input[name="caveni_start_date"]').val();
+      endDate = $('input[name="caveni_end_date"]').val();
+    } else {
+      startDate = $(
+        ".seo-date-filters .caveni--tab-option.caveni--active"
+      ).data("value");
+      endDate = "yesterday";
+    }
+
+    $(".caveni-seo-section .caveni-loader").show();
+    let msgel = $(this);
+    let caveniClientId = $(".client-search-seo").find(":selected").val();
+
+    $.ajax({
+      type: "POST",
+      url: caveniSeo.ajaxurl,
+      data: {
+        action: "caveni_get_seo_data",
+        caveni_nonce: caveniSeo.security_get_data,
+        caveni_client_id: caveniClientId,
+        caveni_start_date: startDate,
+        caveni_end_date: endDate,
+      },
+      success: function (response) {
+        let timeZone = response.data.ga4_property_details.timeZone;
+
+        $(".caveni-chart-filters .filter-item").click(function () {
+          $(".caveni--select-option option[value='custom']")
+            .prop("disabled", false)
+            .prop("selected", true);
+
+          setTimeout(() => {
+            $(".caveni--select-option option[value='custom']").prop(
+              "disabled",
+              true
+            );
+          }, 100);
+
+          let selectedRange = $(this).text().trim();
+
+          // Create a Date object in the correct timezone
+          let now = new Date(new Date().toLocaleString("en-US", { timeZone }));
+
+          console.log(`time now in ${timeZone}`, now);
+          let mtd = new Date(now.getFullYear(), now.getMonth(), 1);
+          console.log(mtd);
+
+          let startDate, endDate;
+
+          // Function to get the first Monday of the current week
+          function getMonday(d) {
+            d = new Date(d);
+            let day = d.getDay();
+            let diff = d.getDate() - (day === 0 ? 6 : day - 1); // Adjust for Monday start
+            return new Date(d.setDate(diff));
+          }
+
+          switch (selectedRange) {
+            // ✅ TODAY/YESTERDAY
+            case "Today":
+              startDate = endDate = now;
+              break;
+            case "Yesterday":
+              startDate = endDate = new Date(now.setDate(now.getDate() - 1));
+              break;
+
+            // ✅ THIS/LAST WEEK
+            case "This Week":
+              startDate = getMonday(now);
+              endDate = now;
+              break;
+            case "Last Week":
+              startDate = getMonday(now);
+              startDate.setDate(startDate.getDate() - 7);
+              endDate = new Date(startDate);
+              endDate.setDate(endDate.getDate() + 6);
+              break;
+
+            // ✅ WEEK TO DATE
+            case "Week to Date":
+              startDate = getMonday(now);
+              endDate = now;
+              break;
+
+            // ✅ THIS/LAST MONTH
+            case "This Month":
+              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+              endDate = now;
+              break;
+            case "Last Month":
+              startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+              endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+              break;
+
+            // ✅ MONTH TO DATE
+            case "Month to Date":
+              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+              endDate = now;
+              break;
+
+            // ✅ THIS/LAST QUARTER
+            case "This Quarter":
+              let quarterStartMonth = Math.floor(now.getMonth() / 3) * 3;
+              startDate = new Date(now.getFullYear(), quarterStartMonth, 1);
+              endDate = now;
+              break;
+            case "Last Quarter":
+              let lastQuarterStartMonth =
+                Math.floor(now.getMonth() / 3) * 3 - 3;
+              startDate = new Date(now.getFullYear(), lastQuarterStartMonth, 1);
+              endDate = new Date(
+                now.getFullYear(),
+                lastQuarterStartMonth + 3,
+                0
+              );
+              break;
+
+            // ✅ QUARTER TO DATE
+            case "Quarter to Date":
+              let qtdStartMonth = Math.floor(now.getMonth() / 3) * 3;
+              startDate = new Date(now.getFullYear(), qtdStartMonth, 1);
+              endDate = now;
+              break;
+
+            // ✅ THIS/LAST YEAR
+            case "This Year":
+              startDate = new Date(now.getFullYear(), 0, 1);
+              endDate = now;
+              break;
+            case "Last Year":
+              startDate = new Date(now.getFullYear() - 1, 0, 1);
+              endDate = new Date(now.getFullYear() - 1, 11, 31);
+              break;
+
+            // ✅ YEAR TO DATE
+            case "Year to Date":
+              startDate = new Date(now.getFullYear(), 0, 1);
+              endDate = now;
+              break;
+
+            default:
+              console.log("Unknown range selected:", selectedRange);
+              return;
+          }
+
+          // Format dates as YYYY-MM-DD
+          let formattedStartDate = formatDate(startDate);
+          let formattedEndDate = formatDate(endDate);
+
+          console.log(
+            "Start Date:",
+            formattedStartDate,
+            "End Date:",
+            formattedEndDate,
+            "Timezone:",
+            timeZone
+          );
+
+          // Set values in hidden inputs
+          $('input[name="caveni_start_date"]').val(formattedStartDate);
+          $('input[name="caveni_end_date"]').val(formattedEndDate);
+
+          // Mark custom date as selected
+          $('input[name="custom_date_selected"]').val("1");
+
+          // Submit form
+          $(".seo-client-search-form").submit();
+
+          $(".caveni-chart-filters").attr("style", "display:none");
+        });
+
+        $(
+          ".caveni-seo-section .caveni-box-main-metric, .caveni-filter-container"
+        ).removeClass("force-hide");
+        $(".caveni-seo-section .caveni-loader").hide();
+
+        if (response.success) {
+          console.log(response.data);
+
+          renderUsersChart(
+            response.data.dates,
+            response.data.metric_total_users
+          );
+          renderImpressionChart(
+            response.data.dates,
+            response.data.metric_total_impressions
+          );
+
+          renderKeywordData(response.data.average_position);
+          renderKeywordImpressions(response.data.impression_data);
+          renderSourceData(response.data.users_by_source);
+
+          renderEngagementData(response.data.engagement);
+          renderTopMetrics(response.data.engagement);
+
+          // GA4 not connect with GSC
+          if (
+            response.data.fetch_errors &&
+            response.data.fetch_errors.impressions &&
+            response.data.fetch_errors.impressions.length
+          ) {
+            $(".caveni-impressions.caveni-box-main-metric").css(
+              "display",
+              "none"
+            );
+
+            $(".caveni-impressions.caveni-box-main-metric").after(`
+              <div class="caveni-error-handler">
+                <p><b style="color: #f7284a">Error:</b> ${response.data.fetch_errors.impressions}</p>  
+              </div>  
+            `);
+          }
+
+          // Failed to fetch average position for keywords
+          // GA4 not connect with GSC
+          if (
+            response.data.fetch_errors &&
+            response.data.fetch_errors.keywordPosition &&
+            response.data.fetch_errors.keywordPosition.length
+          ) {
+            $(
+              ".keyword-avg-position .caveni-table, .impressions-by-keyword .caveni-table"
+            ).after(`
+                <div class="caveni-error-handler">
+                  <p><b style="color: #f7284a">Error:</b> ${response.data.fetch_errors.keywordPosition}</p>  
+                </div>
+            `);
+          }
+        }
+
+        setTimeout(() => {
+          $("#impression-chart-seo, #user-chart-seo").show();
+          $(".caveni-table-reponsive .loader-container").hide();
+
+          // $("#avg_position_body tr, #keyword_body tr, #source_body tr").each(
+          //   function (index) {
+          //     if (index >= 99) {
+          //       $(this).remove();
+          //     }
+          //   }
+          // );
+
+          caveniSorter();
+        }, 100);
+      },
+    });
   }
 
   $(".seo-client-search-form").submit(async function (e) {

@@ -69,7 +69,7 @@
 <div class="caveni-seo-section">
     <div class="seo-left-col">
 
-        <div class="caveni-box">
+        <div id="caveni__impression-chart" class="caveni-box">
 
             <div class="caveni-box-title">
                 <div class="caveni-icon">
@@ -86,7 +86,7 @@
             <div id="impression-chart-seo"></div>
         </div>
 
-        <div class="caveni-box">
+        <div id="caveni__user-chart" class="caveni-box">
             
             <div class="caveni-box-title">
                 <div class="caveni-icon">

@@ -101,14 +101,14 @@ $caveni_loader = '<img style="display:none;" class="caveni-loader" src="' . CAVE
         </div>
 
         <!-- For Report Generation -->
-        <div class="col-xl-12 col-lg-12 col-md-12 crm-report-generation" style="margin-top: 50px;">
-            <div id="caveni__ppc-report" style="opacity:0"><?php include CAVENI_IO_PATH . 'includes/modules/ppc-report.php'; ?></div>
+        <div class="col-xl-12 col-lg-12 col-md-12 crm-report-generation" style="margin-top: 50px; opacity: 0;">
+            <div id="caveni__ppc-report"><?php include CAVENI_IO_PATH . 'includes/modules/ppc-report.php'; ?></div>
             
             <br>
             <hr style="height: 10px; background: black;">
             <br>
 
-            <div id="caveni__seo-report" style="opacity:0"><?php include CAVENI_IO_PATH . 'includes/modules/seo-report.php'; ?></div>
+            <div id="caveni__seo-report"><?php include CAVENI_IO_PATH . 'includes/modules/seo-report.php'; ?></div>
         </div>
     </div>
 </div>
